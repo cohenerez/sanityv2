@@ -54,7 +54,7 @@ public class TestListener implements ITestListener {
     }
 
 
-    @Link("https://automate.browserstack.com/builds/f535bea9b4c4f1050bccd80507ab9b175b959d8a/sessions/  {aurl}" )
+    @Link("https://automate.browserstack.com/builds/f535bea9b4c4f1050bccd80507ab9b175b959d8a/sessions/{aurl}" )
     private void browserStackLinkGenerator() {
       String  aurl =  ApplicationDriver.get().getSession(ApplicationDriver.get().getDriver());
 
