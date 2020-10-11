@@ -92,18 +92,19 @@ public class CheckOutPage extends BasePage<CheckOutPage> {
         }
     }
 
-    public List<Double>  retrievePriceAndDiscount(String itemName) {
+     public List<Double>  retrievePriceAndDiscount(String itemName) {
         List<Double> priceData = new ArrayList<>();
         WebElement priceWebElement = getItem(itemName, Column.UNITPRICE);
-        double price = Double.valueOf(priceWebElement.findElement(By.tagName("class")).getAttribute("price special-price"));
-        priceData.add(price);
-        double discount = Double.valueOf(priceWebElement.findElement(By.tagName("class")).getAttribute("price-percent-reduction small"));
+       double price = Double.valueOf(priceWebElement.findElement(By.xpath( "//*[contains(@id, 'product_price_')]/span[1]" )).getText());
+            priceData.add(price);
+        double discount = Double.valueOf(priceWebElement.findElement(By.xpath( "//*[contains(@id, 'product_price_')]/span[2]" )).getText());
         priceData.add(discount);
-        double oldPrice = Double.valueOf(priceWebElement.findElement(By.tagName("class")).getAttribute("old-price"));
+        double oldPrice = Double.valueOf(priceWebElement.findElement(By.xpath( "//*[contains(@id, 'product_price_')]/span[3]" )).getText());
         priceData.add(oldPrice);
 
         return priceData;
     }
+
 
 
     public boolean isCartEmpty() {
