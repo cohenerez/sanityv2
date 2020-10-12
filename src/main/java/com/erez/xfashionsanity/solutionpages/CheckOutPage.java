@@ -8,11 +8,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 import static  com.erez.xfashionsanity.frameworksetup.EnvironmentVariables.LOGIN;
 import static  com.erez.xfashionsanity.frameworksetup.EnvironmentVariables.PASSWORD;
 
 public class CheckOutPage extends BasePage<CheckOutPage> {
 
+    private final static Logger logger = Logger.getLogger(CheckOutPage.class);
+    
     @FindBy(css = "[href*='order&step=1']")
     private WebElement proceedToStep2;
 
@@ -99,6 +102,8 @@ public class CheckOutPage extends BasePage<CheckOutPage> {
            double price = Double.valueOf(priceWebElement.findElement(
                 By.xpath( "//*[contains(@id, 'product_price_')]/span[1]" )).getText().substring(1));
           priceData.add(price);
+           logger.info("price is : " + price);
+          
 
           Pattern pattern = Pattern.compile("^[0-9]*$");
           double discount= 0;
@@ -109,10 +114,12 @@ public class CheckOutPage extends BasePage<CheckOutPage> {
             discount = Double.valueOf(matcher.group(1)) ;
         }
          priceData.add(discount);
+          logger.info("discount is : " + discount);
         
          double oldPrice = Double.valueOf(priceWebElement.findElement(
                 By.xpath( "//*[contains(@id, 'product_price_')]/span[3]" )).getText().substring(1));
         priceData.add(oldPrice);
+        logger.info("oldPrice is : " + oldPrice);  
 
         return priceData;
     }
