@@ -27,18 +27,20 @@ public class CheckOutTest  extends BaseTest {
         assertEquals(checkOutPage.getItemsInCart(), 3, "Incorrect number of items in cart");
     }
 
-    @Test
-    public void checkCorrectCalculationOfDiscount(){
+   @Test
+    public void checkCorrectCalculationOfDiscount() throws InterruptedException {
 
         List<Double> priceData = new ArrayList<>();
         ItemPage itemPage = new ItemPage("index.php?id_product=5&controller=product").get();
         itemPage.clickAddToCart();
         CheckOutPage checkOutPage = itemPage.clickCheckout();
         priceData = checkOutPage.retrievePriceAndDiscount("Printed Summer Dress");
+        DecimalFormat df2 = new DecimalFormat("#.##");
         double price = priceData.get(0);
         double discount = priceData.get(1);
         double oldPrice = priceData.get(2);
-        assertEquals(price,oldPrice -(oldPrice * discount / 100) ,"Incorrect calculation Of discount ");
+        double calcPrice = oldPrice -((oldPrice * discount) / 100);
+        assertEquals(price, df2.format(calcPrice) ,"Incorrect calculation Of discount ");
 
 
     }
