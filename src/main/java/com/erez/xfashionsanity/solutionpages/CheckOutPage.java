@@ -119,10 +119,14 @@ public class CheckOutPage extends BasePage<CheckOutPage> {
         if(! temp.isEmpty()){
             discount = Double.valueOf(temp) ;
         }
+         logger.info("discount is :" + discount);
          priceData.add(discount);
-        double oldPrice = Double.valueOf(priceWebElement.findElement(
+        
+         
+         double oldPrice = Double.valueOf(priceWebElement.findElement(
                 By.xpath( "//*[contains(@id, 'product_price_')]/span[3]" )).getText().substring(1));
-        priceData.add(oldPrice);
+         logger.info("oldPrice is :" + oldPrice);
+         priceData.add(oldPrice);
 
         return priceData;
     }
