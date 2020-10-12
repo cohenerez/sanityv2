@@ -96,33 +96,37 @@ public class CheckOutPage extends BasePage<CheckOutPage> {
         }
     }
 
-      public List<Double>  retrievePriceAndDiscount(String itemName) {
-           List<Double> priceData = new ArrayList<>();
-           WebElement priceWebElement = getItem(itemName, Column.UNITPRICE);
-           double price = Double.valueOf(priceWebElement.findElement(
-                By.xpath( "//*[contains(@id, 'product_price_')]/span[1]" )).getText().substring(1));
-          priceData.add(price);
-           logger.info("price is : " + price);
-          
+     
+     public List<Double>  retrievePriceAndDiscount(String itemName) {
+        List<Double> priceData = new ArrayList<>();
+        WebElement priceWebElement = getItem(itemName, Column.UNITPRICE);
+       double price = Double.valueOf(priceWebElement.findElement(
+               By.xpath( "//*[contains(@id, 'product_price_')]/span[1]" )).getText().substring(1));
+            priceData.add(price);
+        logger.info("price is :" + price);
+        double discount= 0;
 
-          Pattern pattern = Pattern.compile("^[0-9]*$");
-          double discount= 0;
-          String discountAsString = priceWebElement.findElement(
-                 By.xpath( "//*[contains(@id, 'product_price_')]/span[2]" )).getText();
+
+        String discountAsString = priceWebElement.findElement(
+                By.xpath( "//*[contains(@id, 'product_price_')]/span[2]" )).getText();
+        Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(discountAsString);
-        if(matcher.find()){
-            discount = Double.valueOf(matcher.group(1)) ;
+        String temp = "";
+        while(matcher.find()){
+           temp = matcher.group();
+        }
+
+        if(! temp.isEmpty()){
+            discount = Double.valueOf(temp) ;
         }
          priceData.add(discount);
-          logger.info("discount is : " + discount);
-        
-         double oldPrice = Double.valueOf(priceWebElement.findElement(
+        double oldPrice = Double.valueOf(priceWebElement.findElement(
                 By.xpath( "//*[contains(@id, 'product_price_')]/span[3]" )).getText().substring(1));
         priceData.add(oldPrice);
-        logger.info("oldPrice is : " + oldPrice);  
 
         return priceData;
     }
+    
 
 
 
