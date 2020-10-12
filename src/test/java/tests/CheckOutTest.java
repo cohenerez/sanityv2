@@ -1,16 +1,20 @@
 package tests;
 
+import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 import com.erez.xfashionsanity.solutionpages.ItemPage;
 import com.erez.xfashionsanity.solutionpages.CheckOutPage;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import java.text.DecimalFormat;
+
 
 
 public class CheckOutTest  extends BaseTest {
+     private final static Logger logger = Logger.getLogger(CheckOutTest.class);
 
     @Test
     public void changeQuantityInCart() {
@@ -28,8 +32,8 @@ public class CheckOutTest  extends BaseTest {
         assertEquals(checkOutPage.getItemsInCart(), 3, "Incorrect number of items in cart");
     }
 
-   @Test
-    public void checkCorrectCalculationOfDiscount() throws InterruptedException {
+    @Test
+    public void checkCorrectCalculationOfDiscount()  {
 
         List<Double> priceData = new ArrayList<>();
         ItemPage itemPage = new ItemPage("index.php?id_product=5&controller=product").get();
@@ -40,7 +44,10 @@ public class CheckOutTest  extends BaseTest {
         double price = priceData.get(0);
         double discount = priceData.get(1);
         double oldPrice = priceData.get(2);
-        double calcPrice = oldPrice -((oldPrice * discount) / 100);
+
+        double calcPrice = oldPrice * Math.abs(1 -(discount / 100));
+        logger.info(calcPrice);
+        logger.info(df2.format(calcPrice));
         assertEquals(price, df2.format(calcPrice) ,"Incorrect calculation Of discount ");
 
 
