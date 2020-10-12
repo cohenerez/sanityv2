@@ -92,14 +92,25 @@ public class CheckOutPage extends BasePage<CheckOutPage> {
         }
     }
 
-     public List<Double>  retrievePriceAndDiscount(String itemName) {
-        List<Double> priceData = new ArrayList<>();
-        WebElement priceWebElement = getItem(itemName, Column.UNITPRICE);
-       double price = Double.valueOf(priceWebElement.findElement(By.xpath( "//*[contains(@id, 'product_price_')]/span[1]" )).getText());
-            priceData.add(price);
-        double discount = Double.valueOf(priceWebElement.findElement(By.xpath( "//*[contains(@id, 'product_price_')]/span[2]" )).getText());
-        priceData.add(discount);
-        double oldPrice = Double.valueOf(priceWebElement.findElement(By.xpath( "//*[contains(@id, 'product_price_')]/span[3]" )).getText());
+      public List<Double>  retrievePriceAndDiscount(String itemName) {
+           List<Double> priceData = new ArrayList<>();
+           WebElement priceWebElement = getItem(itemName, Column.UNITPRICE);
+           double price = Double.valueOf(priceWebElement.findElement(
+                By.xpath( "//*[contains(@id, 'product_price_')]/span[1]" )).getText().substring(1));
+          priceData.add(price);
+
+          Pattern pattern = Pattern.compile("^[0-9]*$");
+          double discount= 0;
+          String discountAsString = priceWebElement.findElement(
+                 By.xpath( "//*[contains(@id, 'product_price_')]/span[2]" )).getText();
+        Matcher matcher = pattern.matcher(discountAsString);
+        if(matcher.find()){
+            discount = Double.valueOf(matcher.group(1)) ;
+        }
+         priceData.add(discount);
+        
+         double oldPrice = Double.valueOf(priceWebElement.findElement(
+                By.xpath( "//*[contains(@id, 'product_price_')]/span[3]" )).getText().substring(1));
         priceData.add(oldPrice);
 
         return priceData;
